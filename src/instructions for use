@@ -1,0 +1,31 @@
+instructions for use
+    To add static usb devices names:
+        udevadm info --name=/dev/<usb device> --attribute-walk
+        look for unique id usually under idVendor or idProduct
+        open /etc/udev/rules.d/99-usb-serial.rules
+        add the unique id in this format:
+            KERNEL=="ttyACM*", ATTRS{idVendor}=="6472", SYMLINK+="<new_device>"
+        remove usb from computer then run:
+            udevadm control --reload-rules
+        plug device back in
+        To check is everything loaded correctly run:
+            ls /dev/<new_device>*  
+        See https://msadowski.github.io/linux-static-port/ for more info
+
+To start robot:
+    roslaunch gofr_bringup gofr_robot.launch
+
+To control robot via keyboard:
+    roslaunch gofr_teleop gofr_teleop_key.launch
+For Slam Mapping
+    roslaunch gofr_slam gofr_slam.launch
+
+
+To save map from slam:
+    rosrun map_server map_saver -f map
+
+To run navigation:
+
+
+A GUI for monitoring ros parameters:
+rosrun rqt_gui rqt_gui

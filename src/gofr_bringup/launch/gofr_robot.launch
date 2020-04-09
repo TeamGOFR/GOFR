@@ -1,0 +1,13 @@
+<launch>
+  <arg name="multi_robot_name" default=""/>
+  <arg name="set_lidar_frame_id" default="base_scan"/> <!-- base_laser -->
+
+  <include file="$(find gofr_bringup)/launch/gofr_core.launch">
+    <arg name="multi_robot_name" value="$(arg multi_robot_name)"/>
+  </include>
+  <include file="$(find gofr_bringup)/launch/gofr_lidar.launch">
+    <arg name="set_frame_id" value="$(arg set_lidar_frame_id)"/>
+  </include>
+  <node pkg="gofr_bringup" type="odometry_publisher" name="odometry_publisher"/>
+  <!-- <node pkg="gofr_bringup" type="gofr_diagnostics" name="gofr_diagnostics" output="screen"/> -->
+</launch>
