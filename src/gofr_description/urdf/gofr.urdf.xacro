@@ -15,7 +15,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://gofr_description/meshes/bases/base_link_m-binary.stl"/>
+        <mesh filename="package://gofr_description/meshes/bases/GOFR_mini.stl"/>
       </geometry>
       <material name="light_black"/>
     </visual>
@@ -23,20 +23,20 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://gofr_description/meshes/bases/base_link_m-binary.stl"/>
+        <mesh filename="package://gofr_description/meshes/bases/GOFR_mini.stl"/>
       </geometry>
     </collision>
 
     <inertial>
       <origin rpy="0 0 0" xyz="5.834560042719257e-07 7.554645109307412e-16 0.13547716753400393"/>
-      <mass value="442.4085411014063"/>
+      <mass value="4.5"/>
       <inertia ixx="10.851545" ixy="0.0" ixz="-8.3e-05"
                iyy="20.978869" iyz="-0.0"
                izz="24.333502" />
     </inertial>
   </link>
 
-  <joint name="wheel_front_left_joint" type="fixed">
+  <!-- <joint name="wheel_front_left_joint" type="fixed">
     <parent link="base_link"/>
     <child link="wheel_front_left_link"/>
     <origin xyz="0.27418 0.218401 0.1016" rpy="0 0 0"/>
@@ -243,7 +243,7 @@
       <mass value="20.614826550909584"/>
       <inertia ixx="1.137646" ixy="0.0" ixz="0.123419" iyy="1.044686" iyz="0.0" izz="0.262287"/>
     </inertial>
-  </link>
+  </link> -->
 
   <joint name="imu_joint" type="fixed">
     <parent link="base_link"/>
