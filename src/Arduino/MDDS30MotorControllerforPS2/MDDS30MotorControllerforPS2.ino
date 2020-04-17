@@ -221,7 +221,7 @@ void setup()
   else if (error == 3)
     Serial.println("Controller refusing to enter Pressures mode, may not support it. ");
 
-//  Serial.print(ps2x.Analog(1), HEX);
+  //  Serial.print(ps2x.Analog(1), HEX);
 
   type = ps2x.readType();
   switch (type) {
@@ -240,7 +240,7 @@ void setup()
   }
   STOP();
   
-//  Serial.print("Start");
+  //  Serial.print("Start");
 }
 
 
@@ -262,7 +262,7 @@ void loop() {
     ps2x.read_gamepad(false, vibrate); //read controller and set large motor to spin at 'vibrate' speed
 
 
-//start ，Initial Motor PWM=120；
+  //start ，Initial Motor PWM=120；
     if (ps2x.Button(PSB_START))  {
       Serial.println("Start is being held");
      //Motor_PWM = 90;
@@ -270,44 +270,54 @@ void loop() {
 
 
     }
-// Motor Rotates Forward
+  // Motor Rotates Forward
     if (ps2x.Button(PSB_PAD_UP)) {
-      Serial.println("Up held this hard: ");
+      //Serial.println("Up held this hard: ");
       //Motor_PWM = 120;
-     ADVANCE();
+     lift.drive(255);
     }
+    else
+    {
+      lift.brake();
+    }
+    
 
-// Reverse；
+  // Reverse；
     if (ps2x.Button(PSB_PAD_DOWN)) {
-      Serial.println("Down held this hard: ");
+      //Serial.println("Down held this hard: ");
        //Motor_PWM = 120;
-      BACK();
+      lift.drive(-255)
     }
+    else
+    {
+      lift.brake();
+    }
+    
 
-//Left
+  //Left
     if (ps2x.Button(PSB_PAD_LEFT)) {
       Serial.println("turn left ");
         //Motor_PWM = 120;//200
       LEFT_1();
     }
 
-//Right
+  //Right
     if (ps2x.Button(PSB_PAD_RIGHT)) {
       Serial.println("turn right");
        // Motor_PWM = 120;//200
       RIGHT_1();
     }
-// Stop
+  // Stop
     if (ps2x.Button(PSB_SELECT)) {
       Serial.println("stop");
       STOP();
     }
-// Diagonal Left Forward
+  // Diagonal Left Forward
     if (ps2x.Button(PSB_PINK)) {
       Serial.println("motor_pmove_left");
       LEFT_2();
     }
-// Diagonal Right Forward
+  // Diagonal Right Forward
     if (ps2x.Button(PSB_RED)) {
       Serial.println("motor_pmove_right");
       RIGHT_2();
@@ -349,58 +359,57 @@ void loop() {
        delay(20);
   }
   if (ps2x.Button(PSB_L1) ) { //print stick values if either is TRUE
-//    Serial.print("Stick Values:");
-//    Serial.print(ps2x.Analog(PSS_LY), DEC); //Left stick, Y axis. Other options: LX, RY, RX
-//    Serial.print(",");
-//    Serial.print(ps2x.Analog(PSS_LX), DEC);
-//    Serial.print(",");
-//    Serial.print(ps2x.Analog(PSS_RY), DEC);
-//    Serial.print(",");
-//    Serial.println(ps2x.Analog(PSS_RX), DEC);
-//
-//    int LY = map(ps2x.Analog(PSS_LY),0,255,100,-100);
-//    int LX = map(ps2x.Analog(PSS_LX),0,255,-100,100);
-//    int RY = map(ps2x.Analog(PSS_RY),0,255,100,-100);
-//    int RX = map(ps2x.Analog(PSS_RX),0,255,-100,100);
-//
-//    if (LY > 0) //forward
-//    {
-//
-//     Motor_PWM = LY;
-//      ADVANCE();
-//      //delay(20);
-//    }
-//    //Back
-//    if (LY < 0)
-//    {
-//      Motor_PWM = LY;
-//      ADVANCE();
-//      //delay(20);
-//    }
-//    //Left
-//    if (LX < 0)
-//    {
-//      Motor_PWM = abs(LX);
-//       LEFT_2();
-//      //delay(20);
-//    }
-//    //右转
-//    if (LX > 0)
-//    {
-//      Motor_PWM = LX;
-//      RIGHT_2();
-//      //delay(20);
-//    }
-//    //如果摇杆居中
-//    if (LY >= -5 && LY <= 5 && LX >= -5 && LX <= 5)
-//    {
-//      STOP();
-//      //delay(20);
-//    }
-//delay(20);
+    /*    Serial.print("Stick Values:");
+     Serial.print(ps2x.Analog(PSS_LY), DEC); //Left stick, Y axis. Other options: LX, RY, RX
+     Serial.print(",");
+     Serial.print(ps2x.Analog(PSS_LX), DEC);
+     Serial.print(",");
+     Serial.print(ps2x.Analog(PSS_RY), DEC);
+     Serial.print(",");
+     Serial.println(ps2x.Analog(PSS_RX), DEC);
+  
+     int LY = map(ps2x.Analog(PSS_LY),0,255,100,-100);
+     int LX = map(ps2x.Analog(PSS_LX),0,255,-100,100);
+     int RY = map(ps2x.Analog(PSS_RY),0,255,100,-100);
+     int RX = map(ps2x.Analog(PSS_RX),0,255,-100,100);
+  
+     if (LY > 0) //forward
+     {
+  
+      Motor_PWM = LY;
+       ADVANCE();
+       //delay(20);
+     }
+     //Back
+     if (LY < 0)
+     {
+       Motor_PWM = LY;
+       ADVANCE();
+       //delay(20);
+     }
+     //Left
+     if (LX < 0)
+     {
+       Motor_PWM = abs(LX);
+        LEFT_2();
+       //delay(20);
+     }
+     //右转
+     if (LX > 0)
+     {
+       Motor_PWM = LX;
+       RIGHT_2();
+       //delay(20);
+     }
+     //如果摇杆居中
+     if (LY >= -5 && LY <= 5 && LX >= -5 && LX <= 5)
+     {
+       STOP();
+       //delay(20);
+     }
+      delay(20); */
   }
-  if(ps2x.Button(PSB_R1) )
-  {
+  if(ps2x.Button(PSB_R1) ){
     
 
    double angle;
@@ -429,13 +438,14 @@ void loop() {
     Serial.print(V4);Serial.println("\t");
     DRIVE(V1,V2,V3,V4);
     }
-    else {STOP();
-    Serial.print((180/PI)*angle);Serial.print("\t");
-    Serial.print(0);Serial.print("\t");
-    Serial.print(0);Serial.print("\t");
-    Serial.print(0);Serial.print("\t");
-    Serial.print(0);Serial.println("\t");  
-}
+    else {
+      STOP();
+      Serial.print((180/PI)*angle);Serial.print("\t");
+      Serial.print(0);Serial.print("\t");
+      Serial.print(0);Serial.print("\t");
+      Serial.print(0);Serial.print("\t");
+      Serial.print(0);Serial.println("\t");  
+    }
     if (not (LX <DeadZone && LX>-DeadZone)){
       if (LX < -DeadZone){
         ROTATECW(-LX);
@@ -443,7 +453,7 @@ void loop() {
         else{ROTATECCW(LX);}
     }
     //else{STOP();}
-delay(20);
+    delay(20);
     
   }
   else{STOP();}
