@@ -14,10 +14,10 @@
 #define AN1F 5 // Arduino pin 5 is connected to MDDS30 pin AN1.
 #define AN2F 6 // Arduino pin 6 is connected to MDDS30 pin AN2.
 #define IN2F 7 // Arduino pin 7 is connected to MDDS30 pin IN2.
-#define IN1R 8 // Arduino pin 4 is connected to MDDS60 pin DIG1.
-#define AN1R 9 // Arduino pin 5 is connected to MDDS30 pin AN1.
-#define AN2R 10 // Arduino pin 6 is connected to MDDS30 pin AN2.
-#define IN2R 11 // Arduino pin 7 is connected to MDDS30 pin IN2.
+#define IN1R 8 // Arduino pin 8 is connected to MDDS60 pin DIG1.
+#define AN1R 9 // Arduino pin 9 is connected to MDDS30 pin AN1.
+#define AN2R 10 // Arduino pin 10 is connected to MDDS30 pin AN2.
+#define IN2R 11 // Arduino pin 11 is connected to MDDS30 pin IN2.
 //Mecanum Wheel Motor Drivers
 Cytron_SmartDriveDuo frontDrive(PWM_INDEPENDENT, IN1F, IN2F, AN1F, AN2F);
 Cytron_SmartDriveDuo rearDrive(PWM_INDEPENDENT, IN1R, IN2R, AN1R, AN2R);
@@ -282,11 +282,10 @@ void loop() {
     }
     
 
-  // Reverse；
+  
     if (ps2x.Button(PSB_PAD_DOWN)) {
-      //Serial.println("Down held this hard: ");
-       //Motor_PWM = 120;
-      lift.drive(-255)
+     //Lower Vertical lift at full speed
+      lift.drive(-255) 
     }
     else
     {
@@ -296,16 +295,16 @@ void loop() {
 
   //Left
     if (ps2x.Button(PSB_PAD_LEFT)) {
-      Serial.println("turn left ");
+      //Serial.println("turn left ");
         //Motor_PWM = 120;//200
-      LEFT_1();
+      //LEFT_1();
     }
 
   //Right
     if (ps2x.Button(PSB_PAD_RIGHT)) {
       Serial.println("turn right");
        // Motor_PWM = 120;//200
-      RIGHT_1();
+      //RIGHT_1();
     }
   // Stop
     if (ps2x.Button(PSB_SELECT)) {
