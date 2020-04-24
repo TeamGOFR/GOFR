@@ -29,3 +29,7 @@ To run navigation:
 
 A GUI for monitoring ros parameters:
 rosrun rqt_gui rqt_gui
+
+
+TODO:
+Try using Eband local planner http://wiki.ros.org/eband_local_planner

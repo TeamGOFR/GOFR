@@ -156,7 +156,7 @@
     </inertial>
   </link>
 
-  <joint name="forks_joint" type="fixed">
+  <joint name="forks_joint" type="prismatic">
     <parent link="forks_base_link"/>
     <child link="forks_link"/>
     <origin xyz="0.02065 0.0 0.013238" rpy="0 0 0"/>
@@ -284,14 +284,14 @@
   </link>
 
   <joint name="camera_joint" type="fixed">
-    <origin xyz="0.073 -0.011 0.084" rpy="0 0 0"/>
-    <parent link="base_link"/>
+    <origin xyz="0 -0.108217 .03" rpy="0 0 0"/>
+    <parent link="lift_link"/>
     <child link="camera_link"/>
   </joint>
 
   <link name="camera_link">
     <collision>
-      <origin xyz="0.005 0.011 0.013" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <box size="0.015 0.030 0.027"/>
       </geometry>
