@@ -156,7 +156,7 @@
     </inertial>
   </link>
 
-  <joint name="forks_joint" type="prismatic">
+  <joint name="forks_joint" type="fixed">
     <parent link="forks_base_link"/>
     <child link="forks_link"/>
     <origin xyz="0.02065 0.0 0.013238" rpy="0 0 0"/>
@@ -215,13 +215,25 @@
     </inertial>
   </link>
   
-  <joint name="lift_joint" type="fixed">
+  <joint name="lift_joint" type="prismatic">
     <parent link="base_link"/>
     <child link="lift_link"/>
     <origin xyz="1.3e-05 0.108217 0.758685" rpy="0 0 0"/>
     <axis xyz="0 0 0.01"/>
+    <limit effort="100" lower="0.0" upper="0.4572" velocity="100"/>
   </joint>
 
+<transmission name="lift_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="lift_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="lift_actr">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  
   <link name="lift_link">
     <visual>
       <origin rpy="0 0 0" xyz="-1.3e-05 -0.108217 -0.758685"/>
