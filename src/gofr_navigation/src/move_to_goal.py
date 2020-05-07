@@ -14,10 +14,10 @@ class map_navigation():
 
     rospy.loginfo("|-------------------------------|")
     rospy.loginfo("|PRESSE A KEY:")
-    rospy.loginfo("|'0': Cafe ")
-    rospy.loginfo("|'1': Office 1 ")
-    rospy.loginfo("|'2': Office 2 ")
-    rospy.loginfo("|'3': Office 3 ")
+    rospy.loginfo("|'0': Conveyor ")
+    rospy.loginfo("|'1': Router Table ")
+    rospy.loginfo("|'2': Area 1 ")
+    rospy.loginfo("|'3': Area 2 ")
     rospy.loginfo("|'q': Quit ")
     rospy.loginfo("|-------------------------------|")
     rospy.loginfo("|WHERE TO GO?")
@@ -30,14 +30,23 @@ class map_navigation():
    # path_to_sounds = "/home/ros/catkin_ws/src/gaitech_edu/src/sounds/"
 
     # declare the coordinates of interest
-    self.xCafe = 4.5
-    self.yCafe = .75
-    self.xOffice1 = 6.25
-    self.yOffice1 = -1.0
-    self.xOffice2 = -6.2
-    self.yOffice2 = 3.25
-    self.xOffice3 = 1.15
-    self.yOffice3 = 3.5
+    self.xConveyor = 4.1228
+    self.yConveyor = 3.501
+    self.zConveyor= -0.707
+    self.wConveyor = 0.707
+
+    self.xRouter = 4
+    self.yRouter = 4.3
+    self.zRouter = 0.707
+    self.wRouter = 0.707
+    self.xArea1 = 0
+    self.yArea1 = 3
+    self.zArea1 = 0.0
+    self.wArea1 = 1
+    self.xArea2 = -1.64517
+    self.yArea2 = 4.54522
+    self.zArea2 = 0.707
+    self.wArea2 = 0.707
     self.goalReached = False
     # initiliaze
     rospy.init_node('map_navigation', anonymous=False)
@@ -45,19 +54,19 @@ class map_navigation():
 
     if (choice == 0):
 
-      self.goalReached = self.moveToGoal(self.xCafe, self.yCafe)
+      self.goalReached = self.moveToGoal(self.xConveyor, self.yConveyor, self.wConveyor, self.zConveyor)
 
     elif (choice == 1):
 
-      self.goalReached = self.moveToGoal(self.xOffice1, self.yOffice1)
+      self.goalReached = self.moveToGoal(self.xRouter, self.yRouter,self.wRouter,self.zRouter)
 
     elif (choice == 2):
 
-      self.goalReached = self.moveToGoal(self.xOffice2, self.yOffice2)
+      self.goalReached = self.moveToGoal(self.xArea1, self.yArea1, self.wArea1, self.zArea1)
 
     elif (choice == 3):
 
-      self.goalReached = self.moveToGoal(self.xOffice3, self.yOffice3)
+      self.goalReached = self.moveToGoal(self.xArea2, self.yArea2, self.wArea2, self.zArea2)
 
     if (choice!='q'):
 
@@ -76,19 +85,19 @@ class map_navigation():
       choice = self.choose()
       if (choice == 0):
 
-        self.goalReached = self.moveToGoal(self.xCafe, self.yCafe)
+        self.goalReached = self.moveToGoal(self.xConveyor, self.yConveyor, self.wConveyor, self.zConveyor)
 
       elif (choice == 1):
 
-        self.goalReached = self.moveToGoal(self.xOffice1, self.yOffice1)
+        self.goalReached = self.moveToGoal(self.xRouter, self.yRouter, self.wRouter, self.zRouter)
 
       elif (choice == 2):
 
-        self.goalReached = self.moveToGoal(self.xOffice2, self.yOffice2)
+        self.goalReached = self.moveToGoal(self.xArea1, self.yArea1, self.wArea1, self.zArea1)
 
       elif (choice == 3):
 
-        self.goalReached = self.moveToGoal(self.xOffice3, self.yOffice3)
+        self.goalReached = self.moveToGoal(self.xArea2, self.yArea2, self.wArea2, self.zArea2)
 
       if (choice!='q'):
 
@@ -108,7 +117,7 @@ class map_navigation():
         rospy.loginfo("Quit program")
         rospy.sleep()
 
-  def moveToGoal(self,xGoal,yGoal):
+  def moveToGoal(self,xGoal,yGoal,wGoal,zGoal):
 
       #define a client for to send goal requests to the move_base server through a SimpleActionClient
       ac = actionlib.SimpleActionClient("move_base", MoveBaseAction)
@@ -129,9 +138,8 @@ class map_navigation():
       goal.target_pose.pose.position =  Point(xGoal,yGoal,0)
       goal.target_pose.pose.orientation.x = 0.0
       goal.target_pose.pose.orientation.y = 0.0
-      goal.target_pose.pose.orientation.z = 0.0
-      goal.target_pose.pose.orientation.w = 1.0
-
+      goal.target_pose.pose.orientation.z = zGoal
+      goal.target_pose.pose.orientation.w = wGoal
       rospy.loginfo("Sending goal location ...")
       ac.send_goal(goal)
 
