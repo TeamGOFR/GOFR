@@ -2,7 +2,8 @@
 
 /*
  * THIS ONE IS FOR THE SMALL ROBOT
-  MecanumbotController.ino - Mecanumbot low-level ROS driver.
+ GOFRController.ino - GOFR low-level ROS driver.
+ Derived by Eli Westbay from the following:
  Created by Josh Villbrandt (http://javconcepts.com/), July 19, 2012.
  Released into the public domain.
  */
@@ -49,24 +50,7 @@ Motor motorD = Motor(DIRD1, DIRD2, PWMD, 1, STBY);
 #define COUNT_RESET 200
 #define COUNT_OVERFLOW 16374
 #define sign(a) (min(1, max(-1, a)))
-/*
-//Motor Directions
- #define MOTORA_FORWARD(pwm)    do{digitalWrite(DIRA1,LOW); digitalWrite(DIRA2,HIGH);analogWrite(PWMA,pwm);}while(0)
- #define MOTORA_STOP(x)         do{digitalWrite(DIRA1,LOW); digitalWrite(DIRA2,LOW); analogWrite(PWMA,0);}while(0)
- #define MOTORA_BACKOFF(pwm)    do{digitalWrite(DIRA1,HIGH);digitalWrite(DIRA2,LOW); analogWrite(PWMA,pwm);}while(0)
- 
- #define MOTORB_FORWARD(pwm)    do{digitalWrite(DIRB1,HIGH); digitalWrite(DIRB2,LOW);analogWrite(PWMB,pwm);}while(0)
- #define MOTORB_STOP(x)         do{digitalWrite(DIRB1,LOW); digitalWrite(DIRB2,LOW); analogWrite(PWMB,0);}while(0)
- #define MOTORB_BACKOFF(pwm)    do{digitalWrite(DIRB1,LOW);digitalWrite(DIRB2,HIGH); analogWrite(PWMB,pwm);}while(0)
- 
- #define MOTORC_FORWARD(pwm)    do{digitalWrite(DIRC1,LOW); digitalWrite(DIRC2,HIGH);analogWrite(PWMC,pwm);}while(0)
- #define MOTORC_STOP(x)         do{digitalWrite(DIRC1,LOW); digitalWrite(DIRC2,LOW); analogWrite(PWMC,0);}while(0)
- #define MOTORC_BACKOFF(pwm)    do{digitalWrite(DIRC1,HIGH);digitalWrite(DIRC2,LOW); analogWrite(PWMC,pwm);}while(0)
- 
- #define MOTORD_FORWARD(pwm)    do{digitalWrite(DIRD1,HIGH); digitalWrite(DIRD2,LOW);analogWrite(PWMD,pwm);}while(0)
- #define MOTORD_STOP(x)         do{digitalWrite(DIRD1,LOW); digitalWrite(DIRD2,LOW); analogWrite(PWMD,0);}while(0)
- #define MOTORD_BACKOFF(pwm)    do{digitalWrite(DIRD1,LOW);digitalWrite(DIRD2,HIGH); analogWrite(PWMD,pwm);}while(0)
- */
+
 #define COUNTS_TO_METERS (0.6283185 / 360.0)
 
 
@@ -189,13 +173,8 @@ void setup()
   odom_timer = millis();
   enc_msg.data = (float *)malloc(sizeof(float)*4);
   enc_msg.data_length = 4;
-
-
   
   nh.loginfo("GOFR Controller startup complete");
- 
-
-
 }
 
 void loop()
@@ -223,17 +202,7 @@ void loop()
     }
   }
 
-  // health timer
-//  if((millis() - health_timer) > HEALTH_PERIOD) {
-//    // microcontroller health
-//    health_msg.cpu_used = utils.cpuUsage(HEALTH_PERIOD); // percentage
-//    health_msg.mem_used = utils.memUsage(); // percentage
-//    health_pub.publish(&health_msg);
-//    health_timer = millis();
-//  }
-  // set motor status LEDs
-
-    // send / receive ROS messages
+      // send / receive ROS messages
   nh.spinOnce();
   // ros likes us to wait at least 1ms between loops - this is accounted for in utils.cpuIdle() below
 
@@ -244,10 +213,7 @@ void loop()
 void controller_cmd_vel(byte x, byte y, byte xy)
 
 {
-  /* x=(byte)128;
-   y=(byte)255;
-   xy=(byte)128;*/
-  // normalize
+   // normalize
   int x2 = x - MAXBITS/2;
   int y2 = y - MAXBITS/2;
   int xy2 = xy - MAXBITS/2;
@@ -263,7 +229,6 @@ void controller_cmd_vel(byte x, byte y, byte xy)
   int pwmc =x2 + y2 - xy2;
   int pwmd = x2 - y2 + xy2;
   DRIVE(pwma,pwmb,pwmc,pwmd);
-  //DRIVE (x2 - y2 + 128 - xy2, x2 + y2 + 128 + xy2, x2 + y2 + 128 - xy2, x2 - y2 + 128 + xy2); Changed to match our code
 }
 void DRIVE (int pwmA, int pwmB, int pwmC, int pwmD) {
 
@@ -287,7 +252,7 @@ void controller_getEncoderCounts(float *xytCounts)
   // find deltas
   int deltaEncoderCounts[4];
   for(int i = 0; i < 4; i++) {
-    //TODO Replace "this" calls
+    
     // check for overflow
     if(abs(lastEncoderCounts[i]) > COUNT_OVERFLOW && abs(newEncoderCounts[i]) > COUNT_OVERFLOW && sign(lastEncoderCounts[i]) != sign(newEncoderCounts[i])) {
      if(sign(lastEncoderCounts[i]) > 0){
@@ -312,12 +277,6 @@ nh.loginfo(STest); */
   xytCounts[0] = (deltaEncoderCounts[0] + deltaEncoderCounts[1] + deltaEncoderCounts[2] + deltaEncoderCounts[3]) / 4;
   xytCounts[1] = (0 - deltaEncoderCounts[0] + deltaEncoderCounts[1] + deltaEncoderCounts[2] - deltaEncoderCounts[3]) / 4;
   xytCounts[2] = (0 - deltaEncoderCounts[0] + deltaEncoderCounts[1] - deltaEncoderCounts[2] + deltaEncoderCounts[3]) / 4;	
-
-  // debug 
-  //xytCounts[0] = newEncoderCounts[0];
-  //xytCounts[1] = newEncoderCounts[1];
-  //xytCounts[2] = newEncoderCounts[2];
-
 }
 
 
@@ -400,28 +359,3 @@ void doEncoderD(){
     }
   }
 }
-
-//
-//void doEncoderB(){
-//  if(digitalRead(ENCB_B)) {
-//    EncoderCounts[1]++;
-//  } else {  
-//    EncoderCounts[1]--;  
-//  }
-//}
-//void doEncoderC(){
-//  if(digitalRead(ENCC_B)) {
-//    EncoderCounts[2]++;
-//  } 
-//  else {  
-//    EncoderCounts[2]--;  
-//  }
-//}
-//void doEncoderD(){
-//  if(digitalRead(ENCD_B)) {
-//    EncoderCounts[3]++;
-//  } 
-//  else {  
-//    EncoderCounts[3]--;  
-//  }
-//}
